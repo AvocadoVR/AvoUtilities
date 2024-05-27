@@ -1,0 +1,5 @@
+/*
+!/Packages
+/Packages/*
+!.gitignore
+!/Packages/com.avocado.avoutilities

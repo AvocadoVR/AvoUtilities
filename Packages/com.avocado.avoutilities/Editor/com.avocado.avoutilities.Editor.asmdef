@@ -1,0 +1,19 @@
+{
+  "name": "com.avocado.avoutilities.Editor",
+  "references": [
+    "VRC.SDKBase",
+    "VRC.SDKBase.Editor",
+    "com.avocado.avoutilities",
+    "UdonSharp.Editor",
+    "UdonSharp.Runtime",
+    "VRC.Udon"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "defineConstraints": [],
+  "optionalUnityReferences": []
+}
