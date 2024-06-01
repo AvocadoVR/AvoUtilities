@@ -16,8 +16,16 @@ public abstract class UIExtensionBase<TComponent, TEnum>
         return null;
     }
 
+    public void AddCustomEvent(TComponent component, TEnum componentEvent, UdonSharpBehaviour behavior, string eventName)
+    {
+        UnityEventBase unityEvent = GetUnityEvent(component, componentEvent);
+        UnityAction<string> baseEvent = behavior.SendCustomEvent;
+        UnityEventTools.AddStringPersistentListener(unityEvent, baseEvent, eventName);
+    }
+
     public void SetCustomEvent(TComponent component, TEnum componentEvent, UdonSharpBehaviour behavior, string eventName)
     {
+        ResetEventInput(component, componentEvent);
         UnityEventBase unityEvent = GetUnityEvent(component, componentEvent);
         UnityAction<string> baseEvent = behavior.SendCustomEvent;
         UnityEventTools.AddStringPersistentListener(unityEvent, baseEvent, eventName);
@@ -51,8 +59,16 @@ public abstract class UIExtensionBase<TComponent>
         return null;
     }
 
+    public void AddCustomEvent(TComponent component, UdonSharpBehaviour behavior, string eventName)
+    {
+        UnityEventBase unityEvent = GetUnityEvent(component);
+        UnityAction<string> baseEvent = behavior.SendCustomEvent;
+        UnityEventTools.AddStringPersistentListener(unityEvent, baseEvent, eventName);
+    }
+
     public void SetCustomEvent(TComponent component, UdonSharpBehaviour behavior, string eventName)
     {
+        ResetEventInput(component);
         UnityEventBase unityEvent = GetUnityEvent(component);
         UnityAction<string> baseEvent = behavior.SendCustomEvent;
         UnityEventTools.AddStringPersistentListener(unityEvent, baseEvent, eventName);

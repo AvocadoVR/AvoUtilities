@@ -103,7 +103,42 @@ namespace AvoUtils.Editor
 
             return find;
         }
-        
+
+        public static string SetComponent<T>(T Component) where T : Component
+        {
+            if (Component == null) return null;
+
+            string path = SetGameObject(Component.gameObject) + "/" + Component.GetType().ToString();
+
+            return path;
+        }
+
+        public static T GetComponent<T>(string Component) where T : Component
+        {
+            if (string.IsNullOrEmpty(Component) || string.IsNullOrWhiteSpace(Component)) return null;
+
+            var data = Component.Split('/');
+
+            string objectPath = "";
+
+            for (int i = 0; i < data.Length - 1; i++)
+            {
+                if (i == 0)
+                {
+                    objectPath += data[i];
+                } else
+                {
+                    objectPath += "/" + data[i];
+                }
+            }
+
+            var gameObject = GetGameObject(objectPath);
+
+            if (gameObject == null) return null;
+
+            return gameObject.GetComponent<T>();
+        }
+
         public static string DownloadText(string uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);

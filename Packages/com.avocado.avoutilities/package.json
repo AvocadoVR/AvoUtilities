@@ -1,7 +1,7 @@
 {
   "name": "com.avocado.avoutilities",
   "displayName": "AvoUtilities",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "gitDependencies": {},
   "vpmDependencies": {
     "com.vrchat.base": "3.5.3-beta.2"

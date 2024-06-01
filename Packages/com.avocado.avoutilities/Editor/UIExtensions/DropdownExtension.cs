@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class DropdownExtension : UIExtensionBase<Dropdown>
-{
-    protected override UnityEventBase GetUnityEvent(Dropdown Component)
+namespace AvoUtils.Editor.UIExtensions {
+    public class DropdownExtension : UIExtensionBase<Dropdown>
     {
-        return Component.onValueChanged;
+        protected override UnityEventBase GetUnityEvent(Dropdown Component)
+        {
+            return Component.onValueChanged;
+        }
     }
 }
