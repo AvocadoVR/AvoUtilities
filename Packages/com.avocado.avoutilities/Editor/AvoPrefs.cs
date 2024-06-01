@@ -103,12 +103,11 @@ namespace AvoUtils.Editor
 
             return find;
         }
-
         public static string SetComponent<T>(T Component) where T : Component
         {
             if (Component == null) return null;
 
-            string path = SetGameObject(Component.gameObject) + "/" + Component.GetType().ToString();
+            string path = SetGameObject(Component.gameObject) + "/" + Component.GetType().Name;
 
             return path;
         }
@@ -126,7 +125,8 @@ namespace AvoUtils.Editor
                 if (i == 0)
                 {
                     objectPath += data[i];
-                } else
+                }
+                else
                 {
                     objectPath += "/" + data[i];
                 }
@@ -136,7 +136,9 @@ namespace AvoUtils.Editor
 
             if (gameObject == null) return null;
 
-            return gameObject.GetComponent<T>();
+            T component = gameObject.GetComponent<T>();
+
+            return component;
         }
 
         public static string DownloadText(string uri)
