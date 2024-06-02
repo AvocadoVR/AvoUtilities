@@ -37,7 +37,7 @@ namespace AvoUtils.Editor
 
             return _texture == null ? null : _texture;
         }
-        
+
 
         public static List<string> SetEnum(Type enumType)
         {
@@ -64,11 +64,11 @@ namespace AvoUtils.Editor
 
             return _enum;
         }
-        
+
         public static string SetGameObject(GameObject obj)
         {
             if (obj == null) return "";
-            
+
             string path = "/" + obj.name;
             while (obj.transform.parent != null)
             {
@@ -81,7 +81,7 @@ namespace AvoUtils.Editor
         public static GameObject GetGameObject(string obj)
         {
             if (obj == "") return null;
-            
+
             GameObject find = GameObject.Find(obj);
 
             if (find == null)
@@ -153,7 +153,7 @@ namespace AvoUtils.Editor
                 return reader.ReadToEnd();
             }
         }
-        
+
         public static Image DownloadImage(string uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);

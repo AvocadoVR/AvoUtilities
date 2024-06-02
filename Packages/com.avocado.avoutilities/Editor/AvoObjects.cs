@@ -10,9 +10,9 @@ public static class AvoObjects
     {
         if (gameObject.transform.childCount > 0)
         {
-            while (gameObject.transform.childCount > 0)
+            for (int i = gameObject.transform.childCount - 1; i >= 0; i--)
             {
-                GameObject.DestroyImmediate(gameObject.transform.GetChild(0));
+                GameObject.DestroyImmediate(gameObject.transform.GetChild(i).gameObject);
             }
         }
     }

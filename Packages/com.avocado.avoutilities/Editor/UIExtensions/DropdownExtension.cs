@@ -1,15 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
+using UdonSharp;
+using UdonSharpEditor;
+using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace AvoUtils.Editor.UIExtensions {
-    public class DropdownExtension : UIExtensionBase<Dropdown>
+namespace AvoUtils.Editor.UIExtensions
+{
+    public static class DropdownExtension
     {
-        protected override UnityEventBase GetUnityEvent(Dropdown Component)
+        public static void AddCustomEvent(this Dropdown dropdown, UdonSharpBehaviour behavior, string eventName)
         {
-            return Component.onValueChanged;
+            UnityAction<string> baseEvent = UdonSharpEditorUtility.GetBackingUdonBehaviour(behavior).SendCustomEvent;
+            UnityEventTools.AddStringPersistentListener(dropdown.onValueChanged, baseEvent, eventName);
+        }
+
+        public static void SetCustomEvent(this Dropdown dropdown, UdonSharpBehaviour behavior, string eventName)
+        {
+            RemoveAllEvents(dropdown);
+
+            UnityAction<string> baseEvent = UdonSharpEditorUtility.GetBackingUdonBehaviour(behavior).SendCustomEvent;
+            UnityEventTools.AddStringPersistentListener(dropdown.onValueChanged, baseEvent, eventName);
+        }
+
+        public static void RemoveCustomEvent(this Dropdown dropdown, UdonSharpBehaviour behavior, string eventName)
+        {
+            if (HasCustomEvent(dropdown, behavior, eventName))
+            {
+                for (int i = 0; dropdown.onValueChanged.GetPersistentEventCount() > 0; i++)
+                {
+                    if (dropdown.onValueChanged.GetPersistentMethodName(i) != eventName) continue;
+
+                    UnityEventTools.RemovePersistentListener(dropdown.onValueChanged, i);
+                }
+            }
+        }
+
+        public static void RemoveAllEvents(this Dropdown dropdown)
+        {
+            for (int i = 0; i < dropdown.onValueChanged.GetPersistentEventCount(); i++)
+            {
+                UnityEventTools.RemovePersistentListener(dropdown.onValueChanged, i);
+            }
+        }
+        public static bool HasCustomEvent(this Dropdown dropdown, UdonSharpBehaviour behavior, string eventName)
+        {
+            for (int i = 0; dropdown.onValueChanged.GetPersistentEventCount() > 0; i++)
+            {
+                if (dropdown.onValueChanged.GetPersistentMethodName(i) == eventName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
