@@ -1,6 +1,7 @@
 {
   "name": "com.avocado.avoutilities",
   "references": [
+    "VRC.SDK3",
     "VRC.SDKBase"
   ],
   "includePlatforms": [],

@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UdonSharp;
 using UdonSharpEditor;
 using UnityEditor.Events;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public enum InputFieldEvent
-{
-    OnChangeEvent,
-    EndEditEvent,
-    SubmitEvent
-}
+
 
 namespace AvoUtils.Editor.UIExtensions
 {
+    public enum InputFieldEvent
+    {
+        OnChangeEvent,
+        EndEditEvent,
+        SubmitEvent
+    }
+
     public static class InputFieldExtension
     {
         public static void AddCustomEvent(this InputField inputField, InputFieldEvent inputFieldEvent, UdonSharpBehaviour behavior, string eventName)
