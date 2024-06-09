@@ -1,3 +1,4 @@
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -17,3 +18,4 @@ public static class AvoObjects
         }
     }
 }
+#endif

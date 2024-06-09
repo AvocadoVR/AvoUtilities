@@ -1,10 +1,9 @@
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
 using UdonSharp;
 using UdonSharpEditor;
 using UnityEditor.Events;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
-
 
 namespace AvoUtils.Editor.UIExtensions
 {
@@ -145,3 +144,4 @@ namespace AvoUtils.Editor.UIExtensions
 
 
 }
+#endif

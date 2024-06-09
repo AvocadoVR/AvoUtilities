@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if !COMPILER_UDONSHARP && UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -91,3 +92,4 @@ namespace AvoUtils.Editor
         }
     }
 }
+#endif

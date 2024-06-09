@@ -1,3 +1,4 @@
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
 using UdonSharp;
 using UdonSharpEditor;
 using UnityEditor.Events;
@@ -56,3 +57,4 @@ namespace AvoUtils.Editor.UIExtensions
         }
     }
 }
+#endif
