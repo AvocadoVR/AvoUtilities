@@ -1,4 +1,5 @@
 ﻿#if !COMPILER_UDONSHARP && UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -7,6 +8,23 @@ namespace AvoUtils.Editor
 {
     public static class AvoTools
     {
+        /*
+        public static void CreateNewTemplateFile(string fileName, string filePath, string templatePath, Dictionary<string, string> replacements = null)
+        {
+            string fileData = File.ReadAllText(templatePath);
+
+            if (replacements != null)
+            {
+                foreach (var replacement in replacements)
+                {
+                    fileData = fileData.Replace($"{{{replacement.Key}}}", replacement.Value);
+                }
+            }
+
+            string fullPath = Path.Combine(filePath, fileName);
+            File.WriteAllText(fullPath, fileData);
+        }
+        */
 
         public static void CreateMaterial(GameObject gameObject, string folderName, string materialName, Shader shader)
         {
