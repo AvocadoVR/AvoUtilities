@@ -6,15 +6,23 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = System.Object;
 
 public static class AvoPref
 {
+    public static void SetColor(this Color color, string key)
+    {
+        var _color = SetColor(color);
+
+        EditorPrefs.SetString(key, _color);
+    }
+    
     public static string SetColor(this Color color)
     {
         return $"{color.r}/{color.g}/{color.b}/{color.a}";
     }
 
-    public static Color GetColor(string color)
+    public static Color GetColor(this string color)
     {
         var rankColorData = color.Split('/');
 
@@ -23,12 +31,19 @@ public static class AvoPref
         return _color;
     }
 
+    public static void SetTexture(this Texture2D texture, string key)
+    {
+        var _texture = SetTexture(texture);
+        
+        EditorPrefs.SetString(key, _texture);
+    }
+
     public static string SetTexture(this Texture2D texture)
     {
         return AssetDatabase.GetAssetPath(texture);
     }
 
-    public static Texture2D GetTexture(string texture)
+    public static Texture2D GetTexture(this string texture)
     {
         Texture2D _texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texture);
 
@@ -36,6 +51,8 @@ public static class AvoPref
 
     }
 
+    
+    
 
     public static string[] SetEnum(Type enumType)
     {
@@ -63,8 +80,38 @@ public static class AvoPref
         return _enum;
     }
 
+    public static void SetAsset<T>(this UnityEngine.Object asset, string key) where T : UnityEngine.Object
+    {
+        var _asset = SetAsset<T>(asset);
+        
+        EditorPrefs.SetString(key, _asset);
+    }
 
-    public static string SetGameObject(this GameObject obj)
+    public static string SetAsset<T>(this UnityEngine.Object asset) where T : UnityEngine.Object
+    {
+        if (asset == null)
+        {
+            return null;
+        }
+
+        string path = AssetDatabase.GetAssetPath(asset);
+
+        return path;
+    }
+
+    public static UnityEngine.Object GetAsset<T>(this string path) where T : UnityEngine.Object
+    {
+        return AssetDatabase.LoadAssetAtPath<T>(path);
+    }
+
+    public static void SetSceneObject(this GameObject obj, string key)
+    {
+        var _obj = SetSceneObject(obj);
+        
+        EditorPrefs.SetString(key, _obj);
+    }
+    
+    public static string SetSceneObject(this GameObject obj)
     {
         if (obj == null) return "";
 
@@ -77,7 +124,7 @@ public static class AvoPref
         return path;
     }
 
-    public static GameObject GetGameObject(string obj)
+    public static GameObject GetSceneObject(this string obj)
     {
         if (obj == "") return null;
 
@@ -91,7 +138,7 @@ public static class AvoPref
             for (int i = 0; i < objects.Length; i++)
             {
                 var _object = objects[i];
-                if (SetGameObject(_object) == obj)
+                if (SetSceneObject(_object) == obj)
                 {
                     find = _object;
                     return find;
@@ -102,20 +149,28 @@ public static class AvoPref
 
         return find;
     }
-    public static string SetComponent<T>(this T Component) where T : Component
-    {
-        if (Component == null) return null;
 
-        string path = SetGameObject(Component.gameObject) + "/" + Component.GetType().Name;
+    public static void SetComponent<T>(this T component, string key) where T : Component
+    {
+        var _component = SetComponent(component);
+        
+        EditorPrefs.SetString(key, _component);
+    }
+    
+    public static string SetComponent<T>(this T component) where T : Component
+    {
+        if (component == null) return null;
+
+        string path = SetSceneObject(component.gameObject) + "/" + component.GetType().Name;
 
         return path;
     }
 
-    public static T GetComponent<T>(string Component) where T : Component
+    public static T GetComponent<T>(this string component) where T : Component
     {
-        if (string.IsNullOrEmpty(Component) || string.IsNullOrWhiteSpace(Component)) return null;
+        if (string.IsNullOrEmpty(component) || string.IsNullOrWhiteSpace(component)) return null;
 
-        var data = Component.Split('/');
+        var data = component.Split('/');
 
         string objectPath = "";
 
@@ -131,13 +186,13 @@ public static class AvoPref
             }
         }
 
-        var gameObject = GetGameObject(objectPath);
+        var gameObject = GetSceneObject(objectPath);
 
         if (gameObject == null) return null;
 
-        T component = gameObject.GetComponent<T>();
+        T _component = gameObject.GetComponent<T>();
 
-        return component;
+        return _component;
     }
 }
 #endif
