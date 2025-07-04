@@ -1,7 +1,7 @@
 {
   "name": "com.avocado.avoutilities",
   "displayName": "AvoUtilities",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Describe this Package",
   "gitDependencies": {},
   "vpmDependencies": {

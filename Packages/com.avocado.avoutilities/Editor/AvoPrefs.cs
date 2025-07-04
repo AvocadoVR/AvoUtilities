@@ -6,23 +6,15 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Object = System.Object;
 
 public static class AvoPref
 {
-    public static void SetColor(this Color color, string key)
-    {
-        var _color = SetColor(color);
-
-        EditorPrefs.SetString(key, _color);
-    }
-    
     public static string SetColor(this Color color)
     {
         return $"{color.r}/{color.g}/{color.b}/{color.a}";
     }
 
-    public static Color GetColor(this string color)
+    public static Color GetColor(string color)
     {
         var rankColorData = color.Split('/');
 
@@ -31,19 +23,12 @@ public static class AvoPref
         return _color;
     }
 
-    public static void SetTexture(this Texture2D texture, string key)
-    {
-        var _texture = SetTexture(texture);
-        
-        EditorPrefs.SetString(key, _texture);
-    }
-
     public static string SetTexture(this Texture2D texture)
     {
         return AssetDatabase.GetAssetPath(texture);
     }
 
-    public static Texture2D GetTexture(this string texture)
+    public static Texture2D GetTexture(string texture)
     {
         Texture2D _texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texture);
 
@@ -51,8 +36,6 @@ public static class AvoPref
 
     }
 
-    
-    
 
     public static string[] SetEnum(Type enumType)
     {
@@ -80,55 +63,25 @@ public static class AvoPref
         return _enum;
     }
 
-    public static void SetAsset<T>(this UnityEngine.Object asset, string key) where T : UnityEngine.Object
-    {
-        var _asset = SetAsset<T>(asset);
-        
-        EditorPrefs.SetString(key, _asset);
-    }
 
-    public static string SetAsset<T>(this UnityEngine.Object asset) where T : UnityEngine.Object
+    public static string SetSceneObject(this GameObject sceneObject)
     {
-        if (asset == null)
+        if (sceneObject == null) return "";
+
+        string path = "/" + sceneObject.name;
+        while (sceneObject.transform.parent != null)
         {
-            return null;
-        }
-
-        string path = AssetDatabase.GetAssetPath(asset);
-
-        return path;
-    }
-
-    public static UnityEngine.Object GetAsset<T>(this string path) where T : UnityEngine.Object
-    {
-        return AssetDatabase.LoadAssetAtPath<T>(path);
-    }
-
-    public static void SetSceneObject(this GameObject obj, string key)
-    {
-        var _obj = SetSceneObject(obj);
-        
-        EditorPrefs.SetString(key, _obj);
-    }
-    
-    public static string SetSceneObject(this GameObject obj)
-    {
-        if (obj == null) return "";
-
-        string path = "/" + obj.name;
-        while (obj.transform.parent != null)
-        {
-            obj = obj.transform.parent.gameObject;
-            path = "/" + obj.name + path;
+            sceneObject = sceneObject.transform.parent.gameObject;
+            path = "/" + sceneObject.name + path;
         }
         return path;
     }
 
-    public static GameObject GetSceneObject(this string obj)
+    public static GameObject GetSceneObject(string sceneObject)
     {
-        if (obj == "") return null;
+        if (sceneObject == "") return null;
 
-        GameObject find = GameObject.Find(obj);
+        GameObject find = GameObject.Find(sceneObject);
 
         if (find == null)
         {
@@ -138,7 +91,7 @@ public static class AvoPref
             for (int i = 0; i < objects.Length; i++)
             {
                 var _object = objects[i];
-                if (SetSceneObject(_object) == obj)
+                if (SetSceneObject(_object) == sceneObject)
                 {
                     find = _object;
                     return find;
@@ -150,13 +103,16 @@ public static class AvoPref
         return find;
     }
 
-    public static void SetComponent<T>(this T component, string key) where T : Component
+    public static string SetAsset(this UnityEngine.Object asset)
     {
-        var _component = SetComponent(component);
-        
-        EditorPrefs.SetString(key, _component);
+        return AssetDatabase.GetAssetPath(asset);
     }
-    
+
+    public static T GetAsset<T>(this string asset) where T : UnityEngine.Object
+    {
+        return AssetDatabase.LoadAssetAtPath<T>(asset);
+    }
+
     public static string SetComponent<T>(this T component) where T : Component
     {
         if (component == null) return null;
@@ -166,7 +122,7 @@ public static class AvoPref
         return path;
     }
 
-    public static T GetComponent<T>(this string component) where T : Component
+    public static T GetComponent<T>(string component) where T : Component
     {
         if (string.IsNullOrEmpty(component) || string.IsNullOrWhiteSpace(component)) return null;
 
@@ -190,9 +146,39 @@ public static class AvoPref
 
         if (gameObject == null) return null;
 
-        T _component = gameObject.GetComponent<T>();
+        T actualComponent = gameObject.GetComponent<T>();
 
-        return _component;
+        return actualComponent;
     }
+
+
+    #region To Class
+
+    public static Color ToColor(this string s)
+    {
+        return GetColor(s);
+    }
+
+    public static Texture2D ToTexture(this string s)
+    {
+        return GetTexture(s);
+    }
+    
+    public static GameObject ToSceneObject(this string s)
+    {
+        return GetSceneObject(s);
+    }
+
+    public static T ToAsset<T>(this string s) where T : UnityEngine.Object
+    {
+        return GetAsset<T>(s);
+    }
+    
+    public static T ToComponent<T>(this string s) where T : Component
+    {
+        return GetComponent<T>(s);
+    }
+
+    #endregion
 }
 #endif
